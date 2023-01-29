@@ -12,7 +12,7 @@ import { Box } from "@mui/system";
 import { NavLink, Outlet } from "react-router-dom";
 import { Divider } from "@mui/material";
 
-export default function Products() {
+export default function Shelter() {
   const [users, setUsers] = React.useState([]);
   React.useEffect(() => {
     // fetchUsers();

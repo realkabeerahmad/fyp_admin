@@ -10,8 +10,8 @@ import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import { Box } from "@mui/system";
 const columns = [
-  { id: "firstName", label: "First Name", minWidth: 100 },
-  { id: "lastName", label: "Last Name", minWidth: 100 },
+  // { id: "firstName", label: "First Name", minWidth: 100 },
+  { id: "name", label: "Name", minWidth: 100 },
   { id: "email", label: "Email", minWidth: 170 },
   {
     id: "verified",
@@ -86,8 +86,7 @@ export default function Users() {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth, fontWeight: "700" }}
-                >
+                  style={{ minWidth: column.minWidth, fontWeight: "700" }}>
                   {column.label}
                 </TableCell>
               ))}

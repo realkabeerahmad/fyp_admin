@@ -9,27 +9,47 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-// import "./AddItems.css";
 import { storage } from "../../firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { useNavigate } from "react-router";
-import { Add } from "@mui/icons-material";
+import { Add, Input } from "@mui/icons-material";
+import { IMaskInput } from "react-imask";
+import PropTypes from "prop-types";
+// --------------------------------------------------------------------
+// --------------------------------------------------------------------
+// ======================================================
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
+  const { onChange, ...other } = props;
+  return (
+    <IMaskInput
+      {...other}
+      mask="+92(000)0000-000"
+      definitions={{
+        "#": /[1-9]/,
+      }}
+      inputRef={ref}
+      onAccept={(value) => onChange({ target: { name: props.name, value } })}
+      overwrite
+    />
+  );
+});
 
-const AddItems = () => {
+TextMaskCustom.propTypes = {
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+const AddShelter = () => {
   const Navigate = useNavigate();
   const [IMGG, setIMGG] = useState("");
   const [imgUrl, setImgUrl] = useState(null);
   const [progresspercent, setProgresspercent] = useState(0);
   const [values, setValues] = useState({
     name: "",
-    category: "",
-    quantity: "",
-    price: "",
     description: "",
-    Warranty: "",
-    Return: "",
-    StandardShipping: "",
-    FastShipping: "",
+    address: "",
+    email: "",
+    phone: "",
+    registration: "",
     Image: "",
   });
   const handleChange = (e) => {
@@ -52,20 +72,16 @@ const AddItems = () => {
       return false;
     } else if (
       !values.name ||
-      !values.price ||
-      !values.quantity ||
       !values.description ||
-      !values.Return ||
-      !values.FastShipping ||
-      !values.StandardShipping ||
-      !values.Warranty
+      !values.address ||
+      !values.email ||
+      !values.phone ||
+      !values.registration
     ) {
       alert("All Fields are required");
       return;
     } else if (values.name.length < 10) {
       alert("Name Must have more then 10 characters");
-    } else if (values.price <= 0) {
-      alert("Price Must be More then 0");
     } else if (values.description.length < 200) {
       alert("Product Description must be more then 200 characters");
     } else {
@@ -89,35 +105,27 @@ const AddItems = () => {
           });
         }
       );
-      // console.log(imgUrl);
       if (imgUrl === null) return;
       const formData = {
         name: values.name,
-        category: values.category,
-        quantity: values.quantity,
-        price: values.price,
         description: values.description,
-        Warranty: values.Warranty,
-        Return: values.Return,
-        StandardShipping: values.StandardShipping,
-        FastShipping: values.FastShipping,
+        address: values.address,
+        email: values.email,
+        phone: values.phone,
+        registration: String,
         Image: imgUrl,
       };
-      // console.log(formData);
       axios
-        .post("http://localhost:8000/shop/add", formData)
+        .post("http://localhost:8000/adoption/shelter/add", formData)
         .then((res) => {
           alert(res.data.message);
           setValues({
             name: "",
-            category: "",
-            quantity: "",
-            price: "",
             description: "",
-            Warranty: "",
-            Return: "",
-            StandardShipping: "",
-            FastShipping: "",
+            address: "",
+            email: "",
+            phone: "",
+            registration: "",
             Image: "",
           });
           setImgUrl(null);
@@ -144,14 +152,13 @@ const AddItems = () => {
             <Box
               sx={{
                 width: "200px",
-                height: "100px",
+                height: "200px",
                 contain: "content",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 backgroundColor: "white",
               }}>
-              {" "}
               {IMGG ? (
                 <img src={IMGG} alt="" width={200} />
               ) : (
@@ -168,23 +175,23 @@ const AddItems = () => {
         </Box>
         <Box sx={{ width: "700px" }}>
           <TextField
-            label="Product Name"
+            label="Shelter Name"
             variant="standard"
             type="text"
             name="name"
-            placeholder="Product Name"
+            placeholder="Shelter Name"
             value={values.name}
             onChange={handleChange}
             sx={{ width: "45%", m: 1 }}
             required
           />
           <TextField
-            label="Quantity"
+            label="Address"
             variant="standard"
-            type="number"
-            name="quantity"
-            // placeholder="values Quanity"
-            value={values.quantity}
+            type="text"
+            name="address"
+            placeholder="Address"
+            value={values.address}
             onChange={handleChange}
             required
             sx={{ width: "45%", m: 1 }}
@@ -192,106 +199,67 @@ const AddItems = () => {
         </Box>
         <Box sx={{ width: "700px" }}>
           <TextField
-            label="Price"
+            label="Email"
             variant="standard"
-            type="number"
-            name="price"
-            // placeholder="values Price"
-            value={values.price}
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={values.email}
             onChange={handleChange}
             required
             sx={{ width: "45%", m: 1 }}
           />
-          <FormControl variant="standard" sx={{ width: "45%", m: 1 }}>
-            <InputLabel id="gender" color="success">
-              Category *
-            </InputLabel>
-            <Select
-              label="Category *"
-              name="category"
-              id="category"
-              color="success"
-              variant="standard"
-              value={values.category}
-              onChange={handleChange}
-              required
-              // sx={{ width: "45%", m: 1 }}
-            >
-              <MenuItem value="Select Tag">Select Tag</MenuItem>
-              <MenuItem value="Food">Food</MenuItem>
-              <MenuItem value="Cloths">Cloths</MenuItem>
-              <MenuItem value="Toys">Toys</MenuItem>
-              <MenuItem value="Medicine">Medicine</MenuItem>
-              <MenuItem value="Accessory">Accessory</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-        <Box sx={{ width: "700px" }}>
           <TextField
             label="Details"
             variant="standard"
             name="description"
-            // placeholder="values Details"
+            placeholder="values Details"
             onChange={handleChange}
             value={values.description}
             rows={5}
             required
             sx={{ width: "45%", m: 1 }}
           />
-          <FormControl variant="standard" sx={{ width: "45%", m: 1 }}>
-            <InputLabel id="gender">Warranty</InputLabel>
-            <Select
-              label="Warranty"
-              name="Warranty"
-              id="Warranty"
-              variant="standard"
-              value={values.Warranty}
-              onChange={handleChange}>
-              <MenuItem value="N/A">N/A</MenuItem>
-              <MenuItem value="Available">Available</MenuItem>
-            </Select>
-          </FormControl>
         </Box>
         <Box sx={{ width: "700px" }}>
-          <FormControl variant="standard" sx={{ width: "45%", m: 1 }}>
-            <InputLabel id="gender">Return</InputLabel>
-            <Select
-              label="Return"
-              name="Return"
-              id="Return"
-              variant="standard"
-              value={values.Return}
-              onChange={handleChange}>
-              <MenuItem value="N/A">N/A</MenuItem>
-              <MenuItem value="Available">Available</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl variant="standard" sx={{ width: "45%", m: 1 }}>
-            <InputLabel id="gender">Fast Shipping</InputLabel>
-            <Select
-              label="Fast Shipping"
-              name="FastShipping"
-              id="FastShipping"
-              variant="standard"
-              value={values.FastShipping}
-              onChange={handleChange}>
-              <MenuItem value="N/A">N/A</MenuItem>
-              <MenuItem value="Available">Available</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl variant="standard" sx={{ width: "45%", m: 1 }}>
-            <InputLabel id="gender">Standard Shipping</InputLabel>
-            <Select
-              label="Standard Shipping"
-              name="StandardShipping"
-              id="StandardShipping"
-              variant="standard"
-              value={values.StandardShipping}
-              onChange={handleChange}>
-              <MenuItem value="N/A">N/A</MenuItem>
-              <MenuItem value="Available">Available</MenuItem>
-            </Select>
-          </FormControl>
+          {/* <FormControl
+            variant="standard"
+            //  color="success"
+            sx={{ width: "40%", m: 1 }}>
+            <InputLabel htmlFor="formatted-text-mask-input">Phone</InputLabel>
+            <Input
+            //     variant="standard"
+            //     value={values.phone}
+            //     onChange={handleChange}
+            //     name="phone"
+            //     id="phone"
+            //     inputComponent={TextMaskCustom}
+            />
+          </FormControl> */}
+          <TextField
+            label="Phone"
+            variant="standard"
+            name="phone"
+            placeholder="Phone"
+            onChange={handleChange}
+            value={values.phone}
+            rows={5}
+            required
+            sx={{ width: "45%", m: 1 }}
+          />
+          <TextField
+            label="Registration #"
+            variant="standard"
+            name="registration"
+            placeholder="Registration #"
+            onChange={handleChange}
+            value={values.registration}
+            rows={5}
+            required
+            sx={{ width: "45%", m: 1 }}
+          />
+        </Box>
+        <Box sx={{ width: "700px" }}>
           <Button
             color="success"
             variant="contained"
@@ -305,4 +273,4 @@ const AddItems = () => {
   );
 };
 
-export default AddItems;
+export default AddShelter;

@@ -25,7 +25,7 @@ import {
 import axios from "axios";
 import React from "react";
 
-const AllProducts = () => {
+const AllShelters = () => {
   const [products, setProducts] = React.useState([]);
   React.useEffect(() => {
     fetch();
@@ -35,10 +35,10 @@ const AllProducts = () => {
   const fetch = () => {
     // const data = { userId: user._id };
     axios
-      .get("http://localhost:8000/shop/show/all")
+      .get("http://localhost:8000/adoption/shelters/show/all")
       .then((res) => {
         // console.log(res.data.products);
-        setProducts(res.data.products);
+        setProducts(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -51,14 +51,15 @@ const AllProducts = () => {
           <TableHead>
             <TableRow>
               <TableCell variant="head">SR#</TableCell>
+              <TableCell variant="head">Logo</TableCell>
               <TableCell variant="head">Name</TableCell>
-              <TableCell variant="head">Category</TableCell>
-              <TableCell variant="head">Price</TableCell>
-              <TableCell variant="head">Quantity Available</TableCell>
-              <TableCell variant="head">Quantity Ordered</TableCell>
-              <TableCell variant="head" align="center">
+              <TableCell variant="head">Email</TableCell>
+              <TableCell variant="head">Phone</TableCell>
+              {/* <TableCell variant="head">Quantity Available</TableCell> */}
+              {/* <TableCell variant="head">Quantity Ordered</TableCell> */}
+              {/* <TableCell variant="head" align="center">
                 Actions
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -134,20 +135,39 @@ const Row = ({ product, no, setProducts }) => {
     <>
       <TableRow>
         <TableCell>{no}</TableCell>
-        <TableCell>{product.name}</TableCell>
-        <TableCell>{product.category}</TableCell>
-        <TableCell align="center">{product.price}</TableCell>
-        <TableCell align="center">{product.quantity}</TableCell>
-        <TableCell align="center">{product.NumberSold}</TableCell>
-        {/* <TableCell variant="head">Total Raiting</TableCell> */}
         <TableCell align="center">
+          <Box
+            sx={{
+              width: 70,
+              height: 70,
+              backgroundColor: "GrayText",
+              borderRadius: 10,
+              contain: "content",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>
+            {product.Logo ? (
+              <img src={product.Logo} style={{ width: 70 }} />
+            ) : (
+              <></>
+            )}
+          </Box>
+        </TableCell>
+        <TableCell>{product.name}</TableCell>
+        <TableCell>{product.email}</TableCell>
+        <TableCell align="center">{product.phone}</TableCell>
+        {/* <TableCell align="center">{product.quantity}</TableCell> */}
+        {/* <TableCell align="center">{product.NumberSold}</TableCell> */}
+        {/* <TableCell variant="head">Total Raiting</TableCell> */}
+        {/* <TableCell align="center">
           <IconButton color="error" onClick={handleClickOpen}>
             <Edit sx={{ fontSize: 15 }} />
           </IconButton>
           <IconButton color="error" onClick={handleDelete}>
             <Delete />
           </IconButton>
-        </TableCell>
+        </TableCell> */}
       </TableRow>
       <Dialog
         fullScreen
@@ -160,15 +180,13 @@ const Row = ({ product, no, setProducts }) => {
             position: "relative",
             backgroundColor: "white",
             color: "#e92e4a",
-          }}
-        >
+          }}>
           <Toolbar>
             <IconButton
               edge="start"
               color="inherit"
               onClick={handleClose}
-              aria-label="close"
-            >
+              aria-label="close">
               <Close />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
@@ -186,8 +204,7 @@ const Row = ({ product, no, setProducts }) => {
             alignItems: "center",
             justifyContent: "center",
             height: "100%",
-          }}
-        >
+          }}>
           <Box sx={{ width: "300px" }}>
             <TextField
               label="Product Name"
@@ -245,4 +262,4 @@ const Row = ({ product, no, setProducts }) => {
     </>
   );
 };
-export default AllProducts;
+export default AllShelters;

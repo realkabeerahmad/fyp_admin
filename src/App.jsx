@@ -13,6 +13,10 @@ import Login from "./Pages/Login/Login";
 import { useState } from "react";
 import Products from "./Pages/Products";
 import AllProducts from "./Pages/AllProducts";
+import Dashboard from "./Pages/Dashboard";
+import AddShelter from "./Components/AddShelter/AddShelter";
+import Shelter from "./Pages/Shelter";
+import AllShelters from "./Pages/AllShelters";
 
 const App = () => {
   const [alert, setAlert] = useState("true");
@@ -51,8 +55,7 @@ const App = () => {
             // justifyContent: "center",
             p: "0 30px",
             backgroundColor: "white",
-          }}
-        >
+          }}>
           <img src={Logo} alt="Pet Hub" style={{ width: "150px" }} />
         </Box>
       </Box>
@@ -71,17 +74,15 @@ const App = () => {
               size="small"
               onClick={() => {
                 setOpenAlert(false);
-              }}
-            >
+              }}>
               <i className="fa fa-times"></i>
             </IconButton>
           }
-          sx={{ mb: 2 }}
-        >
+          sx={{ mb: 2 }}>
           {alert}
         </Alert>
       </Collapse>
-      {(login && isAdmin) || true ? (
+      {login && isAdmin ? (
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           <Box sx={{ width: "200px" }}>
             <Navigation setLogin={setLogin} />
@@ -89,6 +90,7 @@ const App = () => {
           <Box sx={{ width: "calc(100% - 200px)" }}>
             <Routes>
               {/* <Route path="/AddProducts" element={<AddItems />} /> */}
+              <Route path="/" element={<Dashboard />} />
               <Route path="/AddPets" element={<Addpet />} />
               <Route path="/Users" element={<Users />} />
               <Route path="/Orders" element={<Orders />} />
@@ -96,7 +98,14 @@ const App = () => {
               <Route path="/Products" element={<Products />}>
                 <Route index path="/Products" element={<AllProducts />} />
                 {/* <Route path="/All" element={<AllProducts />} /> */}
-                <Route path="AddProducts" element={<AddItems />} />
+                <Route path="AddProduct" element={<AddItems />} />
+                {/* <Route path="AddShelter" element={<AddShelter />} /> */}
+              </Route>
+              <Route path="/Shelters" element={<Shelter />}>
+                <Route index path="/Shelters" element={<AllShelters />} />
+                {/* <Route path="/All" element={<AllProducts />} /> */}
+                {/* <Route path="AddProduct" element={<AddItems />} /> */}
+                <Route path="AddShelter" element={<AddShelter />} />
               </Route>
             </Routes>
           </Box>

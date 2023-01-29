@@ -3,10 +3,14 @@ import { NavLink } from "react-router-dom";
 import "./Navigation.css";
 import { Box } from "@mui/material";
 import {
+  Add,
+  ArrowDownward,
   CheckCircle,
   Dashboard,
   Group,
+  Home,
   Inventory,
+  KeyboardArrowDown,
   Logout,
   Pets,
 } from "@mui/icons-material";
@@ -19,16 +23,18 @@ const Navigation = ({ setLogin }) => {
     textDecoration: "none",
     backgroundColor: "none",
     padding: "10px 30px",
+    cursor: "pointer",
   };
+  const [ap, setAp] = React.useState(false);
+  const [ass, setAss] = React.useState(false);
   return (
     <Box
       sx={{
         p: 1,
         borderRight: "1px solid #c2c2c2",
-        height: "100%",
+        height: "calc(100vh - 72px)",
         backgroundColor: "white",
-      }}
-    >
+      }}>
       <Box sx={{ fontSize: 20 }}>
         <NavLink exact to="/" activeClassName="is-active" style={NavlinkSx}>
           <Dashboard sx={{ mr: 2 }} />
@@ -36,11 +42,28 @@ const Navigation = ({ setLogin }) => {
         </NavLink>
       </Box>
       <Box sx={{ fontSize: 20 }}>
-        <NavLink to="/Products" activeClassName="is-active" style={NavlinkSx}>
+        <Box sx={NavlinkSx} onClick={() => setAp(ap ? false : true)}>
           <Inventory sx={{ mr: 2 }} />
           Products
-        </NavLink>
+        </Box>
       </Box>
+      {ap ? (
+        <Box sx={{ fontSize: 15 }}>
+          <NavLink to="/Products" activeClassName="is-active" style={NavlinkSx}>
+            <Inventory sx={{ mr: 1, fontSize: 15 }} />
+            All Products
+          </NavLink>
+          <NavLink
+            to="/Products/AddProduct"
+            activeClassName="is-active"
+            style={NavlinkSx}>
+            <Add sx={{ mr: 1, fontSize: 15 }} />
+            Add Product
+          </NavLink>
+        </Box>
+      ) : (
+        <></>
+      )}
       <Box sx={{ fontSize: 20 }}>
         <NavLink to="/Users" activeClassName="is-active" style={NavlinkSx}>
           <Group sx={{ mr: 2 }} />
@@ -54,10 +77,28 @@ const Navigation = ({ setLogin }) => {
         </NavLink>
       </Box>
       <Box sx={{ fontSize: 20 }}>
-        <NavLink to="/Pets" activeClassName="is-active" style={NavlinkSx}>
-          <Pets sx={{ mr: 2 }} /> Pets
-        </NavLink>
+        <Box sx={NavlinkSx} onClick={() => setAss(ass ? false : true)}>
+          <Inventory sx={{ mr: 2 }} />
+          Shelters
+        </Box>
       </Box>
+      {ass ? (
+        <Box sx={{ fontSize: 15 }}>
+          <NavLink to="/Shelters" activeClassName="is-active" style={NavlinkSx}>
+            <Home sx={{ mr: 1, fontSize: 15 }} />
+            All Shelters
+          </NavLink>
+          <NavLink
+            to="/Shelters/AddShelter"
+            activeClassName="is-active"
+            style={NavlinkSx}>
+            <Add sx={{ mr: 1, fontSize: 15 }} />
+            Add Shelter
+          </NavLink>
+        </Box>
+      ) : (
+        <></>
+      )}
       <Box
         sx={{
           fontSize: 20,
@@ -69,8 +110,7 @@ const Navigation = ({ setLogin }) => {
           padding: "10px 30px",
           cursor: "pointer",
         }}
-        onClick={() => setLogin(false)}
-      >
+        onClick={() => setLogin(false)}>
         {/* <NavLink to="/Pets" activeClassName="is-active"> */}
         <Logout sx={{ mr: 2, color: "#e92e4a" }} /> Logout
         {/* </NavLink> */}
