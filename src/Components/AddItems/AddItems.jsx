@@ -66,9 +66,10 @@ const AddItems = () => {
       alert("Name Must have more then 10 characters");
     } else if (values.price <= 0) {
       alert("Price Must be More then 0");
-    } else if (values.description.length < 200) {
-      alert("Product Description must be more then 200 characters");
     } else {
+    /*else if (values.description.length < 200) {
+      alert("Product Description must be more then 200 characters");
+    }*/
       const storageRef = ref(storage, `files/${values.Image.name}`);
       const uploadTask = uploadBytesResumable(storageRef, values.Image);
 

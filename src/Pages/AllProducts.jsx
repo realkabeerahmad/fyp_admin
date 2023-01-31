@@ -96,15 +96,15 @@ const Row = ({ product, no, setProducts }) => {
     setValues({ ...values, [value]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    axios
-      .post("http://localhost:8000/shop/order/update", values)
-      .then((res) => {
-        // console.log(res.data);
-        setP(res.data.data);
-        handleClose();
-      });
-  };
+  // const handleSubmit = () => {
+  //   axios
+  //     .post("http://localhost:8000/shop/order/update", values)
+  //     .then((res) => {
+  //       // console.log(res.data);
+  //       setP(res.data.data);
+  //       handleClose();
+  //     });
+  // };
 
   const handleDelete = () => {
     if (
@@ -129,6 +129,28 @@ const Row = ({ product, no, setProducts }) => {
     } else {
       return;
     }
+  };
+  const handleEdit = () => {
+    // if (
+    //   window.confirm("Are you sure to delete this product permanently") == true
+    // ) {
+    const data = { _id: product._id, quantity: values.quantity };
+    axios
+      .post(`http://localhost:8000/shop/edit`, data)
+      .then((res) => {
+        axios
+          .get("http://localhost:8000/shop/show/all")
+          .then((res) => {
+            console.log(res.data.products);
+            setProducts(res.data.products);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <>
@@ -160,21 +182,19 @@ const Row = ({ product, no, setProducts }) => {
             position: "relative",
             backgroundColor: "white",
             color: "#e92e4a",
-          }}
-        >
+          }}>
           <Toolbar>
             <IconButton
               edge="start"
               color="inherit"
               onClick={handleClose}
-              aria-label="close"
-            >
+              aria-label="close">
               <Close />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Edit Product
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleSubmit}>
+            <Button autoFocus color="inherit" onClick={handleEdit}>
               save
             </Button>
           </Toolbar>
@@ -186,59 +206,15 @@ const Row = ({ product, no, setProducts }) => {
             alignItems: "center",
             justifyContent: "center",
             height: "100%",
-          }}
-        >
+          }}>
           <Box sx={{ width: "300px" }}>
             <TextField
-              label="Product Name"
+              label="Product Quantity"
               sx={{ width: "100%", m: 1 }}
               variant="standard"
-              value={values.TrackingId}
-              onChange={handleChange("TrackingId")}
+              value={values.quantity}
+              onChange={handleChange("quantity")}
             />
-          </Box>
-          <Box sx={{ width: "300px" }}>
-            <FormControl variant="standard" sx={{ width: "100%", m: 1 }}>
-              <InputLabel id="gender">Courier Service</InputLabel>
-              <Select
-                label="Courier Service"
-                name="gender"
-                id="gender"
-                // color="success"
-                variant="standard"
-                value={values.TrackingService}
-                onChange={handleChange("TrackingService")}
-                // required
-              >
-                <MenuItem value="TCS">TCS</MenuItem>
-                <MenuItem value="Cheeta">Cheeta</MenuItem>
-                <MenuItem value="DHL">DHL</MenuItem>
-                <MenuItem value="Other">Other</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-          <Box sx={{ width: "300px" }}>
-            <FormControl variant="standard" sx={{ width: "100%", m: 1 }}>
-              <InputLabel id="gender">Status</InputLabel>
-              <Select
-                label="Courier Service"
-                name="gender"
-                id="gender"
-                // color="success"
-                variant="standard"
-                value={values.status}
-                onChange={handleChange("status")}
-                // required
-              >
-                <MenuItem value="Pending">Pending</MenuItem>
-                <MenuItem value="Ready To Ship">Ready To Ship</MenuItem>
-                <MenuItem value="Shipped">Shipped</MenuItem>
-                <MenuItem value="Ready To Deliver">Ready To Deliver</MenuItem>
-                <MenuItem value="Delivered">Delivered</MenuItem>
-                <MenuItem value="Cancled">Cancled</MenuItem>
-                <MenuItem value="Not Recived">Not Recived</MenuItem>
-              </Select>
-            </FormControl>
           </Box>
         </Box>
       </Dialog>

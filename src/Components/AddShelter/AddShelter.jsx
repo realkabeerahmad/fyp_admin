@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { storage } from "../../firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { useNavigate } from "react-router";
@@ -222,20 +214,6 @@ const AddShelter = () => {
           />
         </Box>
         <Box sx={{ width: "700px" }}>
-          {/* <FormControl
-            variant="standard"
-            //  color="success"
-            sx={{ width: "40%", m: 1 }}>
-            <InputLabel htmlFor="formatted-text-mask-input">Phone</InputLabel>
-            <Input
-            //     variant="standard"
-            //     value={values.phone}
-            //     onChange={handleChange}
-            //     name="phone"
-            //     id="phone"
-            //     inputComponent={TextMaskCustom}
-            />
-          </FormControl> */}
           <TextField
             label="Phone"
             variant="standard"
